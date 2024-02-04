@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Jabatan;
+use App\Models\Log;
 use App\Models\Unit;
 use App\Models\User;
 use App\Models\UserJabatan;
@@ -153,6 +154,7 @@ class UserController extends Controller
      */
     public function destroy(User $pegawai)
     {
+        Log::where('user_id', $pegawai->id)->delete();
         UserJabatan::where('user_id', $pegawai->id)->delete();
         $pegawai->delete();
         return response()->json([

@@ -16,7 +16,7 @@ return new class extends Migration
             $table->integer("user_id");
             $table->string("action");
             $table->text("description");
-            $table->foreign('user_id')->references('id')->on('users');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('NO ACTION');
             $table->timestamps();
         });
     }
