@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Log;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -14,6 +15,11 @@ class AuthController extends Controller
                 'message' => 'Invalid login details'
             ], 401);
         }
+        Log::create([
+            'action' => 'LOGIN',
+            'user_id' => Auth::user()->id,
+            'description' => 'Login To System',
+        ]);
         $request->session()->regenerate();
     }
 
@@ -22,6 +28,11 @@ class AuthController extends Controller
         Auth::logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
+        Log::create([
+            'action' => 'LOG OUT',
+            'user_id' => Auth::user()->id,
+            'description' => 'Log Out From System',
+        ]);
     }
 
     public function me(Request $request)
