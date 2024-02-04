@@ -15,8 +15,8 @@ return new class extends Migration
             $table->integer('id')->autoIncrement();
             $table->integer("user_id");
             $table->integer("jabatan_id");
-            $table->foreign('user_id')->references('id')->on('users');
-            $table->foreign('jabatan_id')->references('id')->on('jabatan');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('CASCADE');
+            $table->foreign('jabatan_id')->references('id')->on('jabatan')->onDelete('CASCADE');
             $table->timestamps();
         });
     }
