@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\UnitController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -15,12 +16,17 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/test',function (Request $request) {
-    return 'asdas';
+
+
+Route::middleware(['auth:sanctum'])->group(function () {
+    Route::get('/user', [AuthController::class, 'me']);
+    Route::apiResources([
+        "unit" => UnitController::class,
+    ]);
 });
 
-Route::get('/user', [AuthController::class, 'me'])->middleware('auth:sanctum');
 
+// Route::resource("unit", [UnitController::class])->middleware('auth:sanctum');
 
 // Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 //     return $request->user();

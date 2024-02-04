@@ -14,7 +14,8 @@ class DatabaseSeeder extends Seeder
     {
         $this->call([
             UserSeeder::class,
-            LoginLogSeeder::class
+            LoginLogSeeder::class,
+            UnitSeeder::class,
         ]);
     }
 }
