@@ -109,7 +109,7 @@ class UserController extends Controller
             'join_date' => $request->join_date,
         ]);
         $dataJabatan = json_decode($request->jabatan);
-        // Menyimpan ID jabatan dari $dataJabatan ke dalam array
+
         foreach ($dataJabatan as $value) {
             $jabatan = Jabatan::firstOrCreate(['name' => $value->name]);
             $jabatanIds[] = $jabatan->id;

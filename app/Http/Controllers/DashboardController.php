@@ -12,8 +12,7 @@ class DashboardController extends Controller
 {
     public function totalPerItem(Request $request)
     {
-        
-        
+
         $commonQuery = function ($query) use ($request) {
             if ($request->rentang_tanggal && count($request->rentang_tanggal) == 2) {
                 $startDate = date('Y-m-d', strtotime($request->rentang_tanggal[0]));
@@ -43,29 +42,10 @@ class DashboardController extends Controller
         ]);
     }
 
-
     public function topLoginActivity(Request $request)
     {
 
-        $data = Log::with('user')->where(function ($query) use ($request) {
-            if ($request->q != '') {
-                $query->whereHas('user', function ($q) use ($request) {
-                    $q->where('name', 'LIKE', '%' . $request->q . '%');
-                });
-            }
-
-            if ($request->rentang_tanggal && count($request->rentang_tanggal) == 2) {
-                $startDate = date('Y-m-d', strtotime($request->rentang_tanggal[0]));
-                $endDate = date('Y-m-d', strtotime($request->rentang_tanggal[1]));
-
-                $query->whereDate("created_at", ">=", $startDate)
-                    ->whereDate("created_at", "<=", $endDate);
-            }
-        })->where("action", "LOGIN")->selectRaw('user_id, COUNT(*) as login_count')
-            ->groupBy('user_id')
-            ->having('login_count', '>', 25)
-            ->orderBy('login_count', $request->sort_order)
-            ->limit(10)->get();  // Tetapkan jumlah per halaman di sini
+        $data = $this->getActivity($request, 'LOGIN');
 
         return response()->json([
             'statusCode'    => 200,
@@ -78,7 +58,19 @@ class DashboardController extends Controller
     public function userActivity(Request $request)
     {
 
-        $data = Log::with('user')->where(function ($query) use ($request) {
+        $data = $this->getActivity($request, 'DATA');
+
+        return response()->json([
+            'statusCode'    => 200,
+            'status'        => true,
+            'message'       => 'Displaying data...',
+            'data'          =>  $data
+        ]);
+    }
+
+    public function getActivity(Request $request, $action_type)
+    {
+        $query = Log::with('user')->where(function ($query) use ($request) {
             if ($request->q != '') {
                 $query->whereHas('user', function ($q) use ($request) {
                     $q->where('name', 'LIKE', '%' . $request->q . '%');
@@ -92,14 +84,20 @@ class DashboardController extends Controller
                 $query->whereDate("created_at", ">=", $startDate)
                     ->whereDate("created_at", "<=", $endDate);
             }
-        })->whereNot("action", "LOGIN")->orderBy('created_at', $request->sort_order)
-            ->paginate($request->per_page);
+        });
 
-        return response()->json([
-            'statusCode'    => 200,
-            'status'        => true,
-            'message'       => 'Displaying data...',
-            'data'          =>  $data
-        ]);
+        if ($action_type === 'LOGIN') {
+            $data = $query->selectRaw('user_id, COUNT(*) as login_count')
+                ->groupBy('user_id')
+                ->having('login_count', '>', 25)
+                ->orderBy('login_count', $request->sort_order)
+                ->limit(10)->get();  // Tetapkan jumlah per halaman di sini
+        } else {
+            $data = $query->whereNot("action", "LOGIN")
+                ->orderBy('created_at', $request->sort_order)
+                ->paginate($request->per_page);
+        }
+
+        return $data;
     }
 }
