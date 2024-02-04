@@ -17,3 +17,9 @@ use Illuminate\Support\Facades\Route;
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/logout', [AuthController::class, 'logout']);
 Route::get('/user', [AuthController::class, 'me'])->middleware('auth:sanctum');
+Route::get('/', function () {
+    return [
+        "version" => 1.0,
+        "data" => "Success"
+    ];
+});
