@@ -50,7 +50,7 @@ class UserController extends Controller
         $request->validate([
             'name' => 'required',
             'username' => 'required|unique:users',
-            'password' => 'required',
+            'password' => 'required|min:7|max:16',
             'join_date' => 'required',
         ]);
         $dataJabatan = json_decode($request->jabatan);
@@ -107,7 +107,7 @@ class UserController extends Controller
         $request->validate([
             'name' => 'required',
             'username' => 'required|unique:users,username,' . $pegawai->id,
-            'password' => 'required',
+            'password' => 'required|min:7|max:16',
             'join_date' => 'required',
         ]);
         $unit = Unit::firstOrCreate(
