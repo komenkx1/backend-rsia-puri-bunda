@@ -86,11 +86,14 @@ class DashboardController extends Controller
         });
 
         if ($action_type === 'LOGIN') {
-            $data = $query->selectRaw('user_id, COUNT(*) as login_count')
+            $data = $query
+                ->selectRaw('user_id, COUNT(*) as login_count')
+                ->where('action', 'LOGIN')
                 ->groupBy('user_id')
-                ->having('login_count', '>', 25)
+                ->havingRaw('COUNT(*) > 25') 
                 ->orderBy('login_count', $request->sort_order)
-                ->limit(10)->get();  
+                ->limit(10)
+                ->get();
         } else {
             $data = $query->whereNot("action", "LOGIN")
                 ->orderBy('created_at', $request->sort_order)
