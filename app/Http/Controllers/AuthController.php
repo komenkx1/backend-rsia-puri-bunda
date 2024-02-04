@@ -10,6 +10,10 @@ class AuthController extends Controller
 {
     public function login(Request $request)
     {
+        $request->validate([
+            'name' => 'required',
+            'password' => 'required',
+        ]);
         if (!Auth::attempt($request->only('username', 'password'))) {
             return response()->json([
                 'message' => 'Invalid login details'

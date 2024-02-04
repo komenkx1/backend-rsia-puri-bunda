@@ -43,6 +43,9 @@ class UnitController extends Controller
      */
     public function store(Request $request)
     {
+        $request->validate([
+            'name' => 'required',
+        ]);
         $newData = Unit::create([
             "name" => $request->name
         ]);
@@ -75,6 +78,9 @@ class UnitController extends Controller
      */
     public function update(Request $request, Unit $unit)
     {
+        $request->validate([
+            'name' => 'required',
+        ]);
         $updatedData = $unit->update([
             "name" => $request->name
         ]);

@@ -45,6 +45,13 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
+        // Validasi unik untuk kolom username
+        $request->validate([
+            'name' => 'required',
+            'username' => 'required|unique:users',
+            'password' => 'required',
+            'join_date' => 'required',
+        ]);
         $dataJabatan = json_decode($request->jabatan);
 
         $unit = Unit::firstOrCreate(
@@ -96,7 +103,12 @@ class UserController extends Controller
      */
     public function update(Request $request, User $pegawai)
     {
-
+        $request->validate([
+            'name' => 'required',
+            'username' => 'required|unique:users,username,' . $pegawai->id,
+            'password' => 'required',
+            'join_date' => 'required',
+        ]);
         $unit = Unit::firstOrCreate(
             ['name' => $request->unit],
         );

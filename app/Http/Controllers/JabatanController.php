@@ -43,6 +43,9 @@ class JabatanController extends Controller
      */
     public function store(Request $request)
     {
+        $request->validate([
+            'name' => 'required',
+        ]);
         $newData = Jabatan::create([
             "name" => $request->name
         ]);
@@ -75,6 +78,9 @@ class JabatanController extends Controller
      */
     public function update(Request $request, Jabatan $jabatan)
     {
+        $request->validate([
+            'name' => 'required',
+        ]);
         $updatedData = $jabatan->update([
             "name" => $request->name
         ]);
