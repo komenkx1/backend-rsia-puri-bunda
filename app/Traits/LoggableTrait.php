@@ -10,11 +10,13 @@ trait LoggableTrait
 {
     protected function logModelOperation($action, $description)
     {
-        Log::create([
-            'action' => $action,
-            'user_id' => Auth::user()->id,
-            'description' => $description,
-        ]);
+        if(Auth::user()){
+            Log::create([
+                'action' => $action,
+                'user_id' => Auth::user()->id,
+                'description' => $description,
+            ]);
+        }
     }
 
     public static function bootLoggableTrait()
