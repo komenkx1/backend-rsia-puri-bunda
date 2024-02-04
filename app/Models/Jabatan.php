@@ -12,4 +12,9 @@ class Jabatan extends Model
 
     protected $guarded = ['id'];
     protected $table = "jabatan";
+
+    public function userJabatan()
+    {
+        return $this->hasMany(UserJabatan::class);
+    }
 }

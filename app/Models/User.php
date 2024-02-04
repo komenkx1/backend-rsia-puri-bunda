@@ -19,8 +19,10 @@ class User extends Authenticatable
      */
     protected $fillable = [
         'name',
-        'email',
+        'username',
         'password',
+        'unit_id',
+        'join_date'
     ];
 
     /**
@@ -42,4 +44,13 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+    public function userJabatan()
+    {
+        return $this->hasMany(UserJabatan::class);
+    }
+    public function unit()
+    {
+        return $this->belongsTo(Unit::class);
+    }
 }

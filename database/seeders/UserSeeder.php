@@ -19,7 +19,8 @@ class UserSeeder extends Seeder
             'name' => 'Admin',
             'username' => 'admin',
             'password' => bcrypt('password'),
-            'join_date' => now()
+            'join_date' => now(),
+            'unit_id' => 1,
         ]);
     }
 }
