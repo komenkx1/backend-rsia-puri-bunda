@@ -80,7 +80,6 @@ class DashboardController extends Controller
             if ($request->rentang_tanggal && count($request->rentang_tanggal) == 2) {
                 $startDate = date('Y-m-d', strtotime($request->rentang_tanggal[0]));
                 $endDate = date('Y-m-d', strtotime($request->rentang_tanggal[1]));
-
                 $query->whereDate("created_at", ">=", $startDate)
                     ->whereDate("created_at", "<=", $endDate);
             }
@@ -91,7 +90,7 @@ class DashboardController extends Controller
                 ->groupBy('user_id')
                 ->having('login_count', '>', 25)
                 ->orderBy('login_count', $request->sort_order)
-                ->limit(10)->get();  // Tetapkan jumlah per halaman di sini
+                ->limit(10)->get();  
         } else {
             $data = $query->whereNot("action", "LOGIN")
                 ->orderBy('created_at', $request->sort_order)
