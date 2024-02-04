@@ -10,4 +10,10 @@ class Log extends Model
     use HasFactory;
     protected $guarded = ['id'];
     protected $table = "log";
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+    
 }

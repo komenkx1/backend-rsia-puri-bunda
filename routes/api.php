@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\JabatanController;
 use App\Http\Controllers\UnitController;
 use App\Http\Controllers\UserController;
@@ -22,6 +23,10 @@ use Illuminate\Support\Facades\Route;
 
 Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('/user', [AuthController::class, 'me']);
+    Route::get('/dashboard/total-item', [DashboardController::class, 'totalPerItem']);
+    Route::get('/dashboard/top-login-activity', [DashboardController::class, 'topLoginActivity']);
+    Route::get('/dashboard/user-activity', [DashboardController::class, 'userActivity']);
+    
     Route::apiResources([
         "unit" => UnitController::class,
         "jabatan" => JabatanController::class,
